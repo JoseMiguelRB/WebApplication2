@@ -1,4 +1,4 @@
-﻿using WebApplication2.Data.Entities;
+﻿ using WebApplication2.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication2.Data
