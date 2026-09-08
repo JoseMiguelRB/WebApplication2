@@ -5,31 +5,32 @@ using WebApplication2.Data.Entities;
 using WebApplication2.Data;
 using System.Linq;
 
+
 public class ProductsController : Controller
 {
-    private readonly DataContext _context;
 
-    public ProductsController(DataContext context)
+    private readonly IRepository _repository;
+
+    public ProductsController(IRepository repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
     // GET: PRODUCTS
-    public async Task<IActionResult> Index()    
+    public IActionResult Index()
     {
-        return View(await _context.Products.ToListAsync());
+        return View(_repository.GetProducts());
     }
 
     // GET: PRODUCTS/Details/5
-    public async Task<IActionResult> Details(int? id)
+    public IActionResult Details(int? id)
     {
         if (id == null)
         {
             return NotFound();
         }
 
-        var product = await _context.Products
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var product = _repository.GetProduct(id.Value);
         if (product == null)
         {
             return NotFound();
@@ -53,22 +54,22 @@ public class ProductsController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.Add(product);
-            await _context.SaveChangesAsync();
+            _repository.AddProduct(product);
+            await _repository.SaveAllAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(product);
     }
 
     // GET: PRODUCTS/Edit/5
-    public async Task<IActionResult> Edit(int? id)
+    public IActionResult Edit(int? id)
     {
         if (id == null)
         {
             return NotFound();
         }
 
-        var product = await _context.Products.FindAsync(id);
+        var product = _repository.GetProduct(id.Value);
         if (product == null)
         {
             return NotFound();
@@ -92,12 +93,12 @@ public class ProductsController : Controller
         {
             try
             {
-                _context.Update(product);
-                await _context.SaveChangesAsync();
+                _repository.UpdateProduct(product);
+                await _repository.SaveAllAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(product.Id))
+                if (!_repository.ProductExists(product.Id))
                 {
                     return NotFound();
                 }
@@ -112,15 +113,14 @@ public class ProductsController : Controller
     }
 
     // GET: PRODUCTS/Delete/5
-    public async Task<IActionResult> Delete(int? id)
+    public IActionResult Delete(int? id)
     {
         if (id == null)
         {
             return NotFound();
         }
 
-        var product = await _context.Products
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var product = _repository.GetProduct(id.Value);
         if (product == null)
         {
             return NotFound();
@@ -132,20 +132,13 @@ public class ProductsController : Controller
     // POST: PRODUCTS/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? id)
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var product = await _context.Products.FindAsync(id);
-        if (product != null)
-        {
-            _context.Products.Remove(product);
-        }
+        var product = _repository.GetProduct(id);
+        _repository.RemoveProduct(product);
 
-        await _context.SaveChangesAsync();
+        await _repository.SaveAllAsync();
         return RedirectToAction(nameof(Index));
     }
 
-    private bool ProductExists(int? id)
-    {
-        return _context.Products.Any(e => e.Id == id);
-    }
 }

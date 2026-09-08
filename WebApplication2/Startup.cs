@@ -32,6 +32,8 @@ namespace WebApplication2
 
             services.AddTransient<SeedDb>();
 
+            services.AddScoped<IRepository, MockRepository>();
+
             services.AddControllersWithViews();
         }
 
