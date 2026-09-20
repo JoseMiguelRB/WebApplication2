@@ -4,8 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication2.Data.Entities
 {
-    public class Product
+    public class Product : IEntity
     {
+
+
         public int Id { get; set; }
 
         [Required]

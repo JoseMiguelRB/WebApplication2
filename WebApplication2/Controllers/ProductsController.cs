@@ -9,28 +9,28 @@ using System.Linq;
 public class ProductsController : Controller
 {
 
-    private readonly IRepository _repository;
+    private readonly IProductRepository _productRepository;
 
-    public ProductsController(IRepository repository)
+    public ProductsController(IProductRepository productRepository)
     {
-        _repository = repository;
+        _productRepository = productRepository;
     }
 
     // GET: PRODUCTS
     public IActionResult Index()
     {
-        return View(_repository.GetProducts());
+        return View(_productRepository.GetAll());
     }
 
     // GET: PRODUCTS/Details/5
-    public IActionResult Details(int? id)
+    public async Task<IActionResult> Details(int? id)
     {
         if (id == null)
         {
             return NotFound();
         }
 
-        var product = _repository.GetProduct(id.Value);
+        var product = await _productRepository.GetByIdAsync(id.Value);
         if (product == null)
         {
             return NotFound();
@@ -51,25 +51,24 @@ public class ProductsController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Product product)
-    {
-        if (ModelState.IsValid)
         {
-            _repository.AddProduct(product);
-            await _repository.SaveAllAsync();
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                await _productRepository.CreateAsync(product);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(product);
         }
-        return View(product);
-    }
 
     // GET: PRODUCTS/Edit/5
-    public IActionResult Edit(int? id)
+    public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
         {
             return NotFound();
         }
 
-        var product = _repository.GetProduct(id.Value);
+        var product = await _productRepository.GetByIdAsync(id.Value);
         if (product == null)
         {
             return NotFound();
@@ -93,12 +92,11 @@ public class ProductsController : Controller
         {
             try
             {
-                _repository.UpdateProduct(product);
-                await _repository.SaveAllAsync();
+                await _productRepository.UpdateAsync(product);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_repository.ProductExists(product.Id))
+                if (!await _productRepository.ExistAsync(product.Id))
                 {
                     return NotFound();
                 }
@@ -120,7 +118,7 @@ public class ProductsController : Controller
             return NotFound();
         }
 
-        var product = _repository.GetProduct(id.Value);
+        var product = _productRepository.GetByIdAsync(id.Value);
         if (product == null)
         {
             return NotFound();
@@ -134,10 +132,8 @@ public class ProductsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var product = _repository.GetProduct(id);
-        _repository.RemoveProduct(product);
-
-        await _repository.SaveAllAsync();
+        var product = await _productRepository.GetByIdAsync(id);
+        await _productRepository.DeleteAsync(product);
         return RedirectToAction(nameof(Index));
     }
 
