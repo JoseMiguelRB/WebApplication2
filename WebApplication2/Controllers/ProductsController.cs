@@ -4,22 +4,27 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication2.Data.Entities;
 using WebApplication2.Data;
 using System.Linq;
+using WebApplication2.Helpers;
 
 
 public class ProductsController : Controller
 {
 
     private readonly IProductRepository _productRepository;
+    private readonly IUserHelper _userHelper;
 
-    public ProductsController(IProductRepository productRepository)
+    public ProductsController(IProductRepository productRepository, IUserHelper userHelper)
+
     {
         _productRepository = productRepository;
+        _userHelper = userHelper;
+
     }
 
     // GET: PRODUCTS
     public IActionResult Index()
     {
-        return View(_productRepository.GetAll());
+        return View(_productRepository.GetAll().OrderBy(p => p.Name));
     }
 
     // GET: PRODUCTS/Details/5
@@ -54,7 +59,8 @@ public class ProductsController : Controller
         {
             if (ModelState.IsValid)
             {
-                await _productRepository.CreateAsync(product);
+            product.User = await _userHelper.GetUserByEmailAsync("romerojosemiguelbello@gmail.com");
+            await _productRepository.CreateAsync(product);
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -92,6 +98,7 @@ public class ProductsController : Controller
         {
             try
             {
+                product.User = await _userHelper.GetUserByEmailAsync("romerojosemiguelbello@gmail.com");
                 await _productRepository.UpdateAsync(product);
             }
             catch (DbUpdateConcurrencyException)
