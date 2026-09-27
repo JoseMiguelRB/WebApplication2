@@ -23,6 +23,12 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "dependencies": {
+      "mssql1": {
+        "type": "mssql",
+        "connectionId": "ConnectionStrings:DefaultConnection."
+      }
     }
   }
 }

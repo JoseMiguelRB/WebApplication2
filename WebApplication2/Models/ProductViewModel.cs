@@ -11,5 +11,4 @@ namespace WebApplication2.Models
         public IFormFile ImageFile { get; set; }
 
     }
-} }
 }
