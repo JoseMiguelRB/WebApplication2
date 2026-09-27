@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using WebApplication2.Data;
 using WebApplication2.Data.Entities;
 using WebApplication2.Helpers;
+using WebApplication2.Web.Helpers;
 
 namespace WebApplication2
 {
@@ -52,6 +53,10 @@ namespace WebApplication2
             services.AddTransient<SeedDb>();
 
             services.AddScoped<IProductRepository, ProductRepository>();
+
+            services.AddScoped<IImageHelper, ImageHelper>();
+
+            services.AddScoped<IConverterHelper, ConverterHelper>();
 
             services.AddControllersWithViews();
         }
