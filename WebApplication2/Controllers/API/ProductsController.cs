@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApplication2.Data;
 
-namespace SuperShop.Web.Controllers.API
+namespace WebApplication2.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
