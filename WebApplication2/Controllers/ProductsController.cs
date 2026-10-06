@@ -8,6 +8,7 @@ using WebApplication2.Data;
 using WebApplication2.Helpers;
 using WebApplication2.Models;
 using WebApplication2.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 
 public class ProductsController : Controller
@@ -50,6 +51,7 @@ public class ProductsController : Controller
     }
 
     // GET: Products/Create
+    [Authorize]
     public IActionResult Create()
     {
         return View();
@@ -97,6 +99,7 @@ public class ProductsController : Controller
     //}
 
     // GET: Products/Edit/5
+    [Authorize]
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
