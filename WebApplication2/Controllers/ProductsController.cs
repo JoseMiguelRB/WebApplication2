@@ -51,7 +51,7 @@ public class ProductsController : Controller
     }
 
     // GET: Products/Create
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public IActionResult Create()
     {
         return View();

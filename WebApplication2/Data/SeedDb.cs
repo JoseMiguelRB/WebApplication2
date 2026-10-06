@@ -23,6 +23,8 @@ namespace WebApplication2.Data
         public async Task SeedAsync()
         {
             await _context.Database.EnsureCreatedAsync();
+            await _userHelper.CheckRoleAsync("Admin");
+            await _userHelper.CheckRoleAsync("Custumer");
 
             var user = await _userHelper.GetUserByEmailAsync("romerojosemiguelbello@gmail.com");
             if (user == null)
@@ -40,6 +42,12 @@ namespace WebApplication2.Data
                 {
                     throw new InvalidOperationException("Could not create the user  in seeder");
                 }
+                await _userHelper.AddUserToRoleAsync(user, "Admin");
+            }
+            var isInRole = await _userHelper.IsUserInRoleAsync(user, "Admin");
+            if (!isInRole)
+            {
+                await _userHelper.AddUserToRoleAsync(user, "Admin");
             }
 
             if (!_context.Products.Any())
