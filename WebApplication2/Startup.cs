@@ -56,8 +56,6 @@ namespace WebApplication2
 
             services.AddScoped<IImageHelper, ImageHelper>();
 
-            services.AddScoped<IBlobHelper, BlobHelper>();
-
             services.AddScoped<IConverterHelper, ConverterHelper>();
 
             services.AddControllersWithViews();

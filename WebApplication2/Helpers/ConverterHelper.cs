@@ -7,12 +7,12 @@ namespace WebApplication2.Web.Helpers
 {
     public class ConverterHelper : IConverterHelper
     {
-        public Product ToProduct(ProductViewModel model, Guid imageId, bool isNew)
+        public Product ToProduct(ProductViewModel model, string path, bool isNew)
         {
             return new Product
             {
                 Id = isNew ? 0 : model.Id,
-                ImageId = imageId,
+                ImageUrl = path,
                 IsAvailable = model.IsAvailable,
                 LastPurchase = model.LastPurchase,
                 LastSale = model.LastSale,
@@ -31,7 +31,7 @@ namespace WebApplication2.Web.Helpers
                 IsAvailable = product.IsAvailable,
                 LastPurchase = product.LastPurchase,
                 LastSale = product.LastSale,
-                ImageId = product.ImageId,
+                ImageUrl = product.ImageUrl,
                 Price = product.Price,
                 Name = product.Name,
                 Stock = product.Stock,
