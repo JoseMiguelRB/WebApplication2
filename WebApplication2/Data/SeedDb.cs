@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using WebApplication2.Data.Entities;
 using WebApplication2.Helpers;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication2.Data
 {
@@ -22,6 +23,7 @@ namespace WebApplication2.Data
 
         public async Task SeedAsync()
         {
+            await _context.Database.MigrateAsync();
             await _context.Database.EnsureCreatedAsync();
             await _userHelper.CheckRoleAsync("Admin");
             await _userHelper.CheckRoleAsync("Custumer");

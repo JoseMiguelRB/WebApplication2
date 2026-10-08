@@ -98,7 +98,7 @@ public class ProductsController : Controller
     //}
 
     // GET: Products/Edit/5
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -158,7 +158,7 @@ public class ProductsController : Controller
     }
 
     // GET: Products/Delete/5
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
