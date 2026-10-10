@@ -32,16 +32,16 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayNameFor(modelItem=> item.Product.Name)
+                    @Html.DisplayFor(ModelItem => item.Product.Name)
                 </td>
                 <td>
-                    @Html.DisplayNameFor(modelItem=> item.Price)
+                    @Html.DisplayFor(ModelItem => item.Price)
                 </td>
                 <td>
-                    @Html.DisplayNameFor(modelItem=> item.Quantity)
+                    @Html.DisplayFor(ModelItem => item.Quantity)
                 </td>
                 <td>
-                    @Html.DisplayNameFor(modelItem=> item.Value)
+                    @Html.DisplayFor(ModelItem => item.Value)
                 </td>
                 <td>
                     <a asp-action="Increase" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-plus"></i></a>
