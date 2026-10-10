@@ -15,5 +15,7 @@ namespace WebApplication2.Data
 
         Task ModifyOrderDetailTempQuantityAsync(int id, double quantity);
 
+        Task DeleteDetailTempAsync(int id);
+
     }
 }
