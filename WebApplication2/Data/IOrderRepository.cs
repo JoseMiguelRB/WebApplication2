@@ -17,5 +17,7 @@ namespace WebApplication2.Data
 
         Task DeleteDetailTempAsync(int id);
 
+        Task<bool> ConfirmOrderAsync(string userName);
+
     }
 }
